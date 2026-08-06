@@ -23,7 +23,13 @@ SERVER_HOST = "127.0.0.1"
 
 class Benchmark:
     def __init__(
-        self, backend: str, output: Path, port: int, iterations: int, warmup: int
+        self,
+        backend: str,
+        output: Path,
+        port: int,
+        iterations: int,
+        warmup: int,
+        certificate_dir: Path | None = None,
     ) -> None:
         self.root = Path(__file__).resolve().parents[2]
         self.backend = backend
@@ -31,7 +37,9 @@ class Benchmark:
         self.port = port
         self.iterations = iterations
         self.warmup = warmup
-        self.certificate_dir = self.root / "tests" / "bench" / "certs"
+        self.certificate_dir = (
+            certificate_dir or self.root / "tests" / "bench" / "certs"
+        )
         self.server: subprocess.Popen[bytes] | None = None
         self.server_log = self.root / "server.log"
         atexit.register(self.stop_server)
@@ -87,6 +95,8 @@ class Benchmark:
                 "run",
                 "--script",
                 str(Path(__file__).with_name("generate_certs.py")),
+                "--cert-dir",
+                str(self.certificate_dir),
             ],
             cwd=self.root,
             check=True,
@@ -262,12 +272,18 @@ def main() -> int:
     parser.add_argument("--port", type=int, default=4433)
     parser.add_argument("--iterations", type=int, default=1000)
     parser.add_argument("--warmup", type=int, default=100)
+    parser.add_argument("--cert-dir", type=Path)
     args = parser.parse_args()
     if args.iterations < 1 or args.warmup < 0:
         raise SystemExit("iterations must be positive and warmup must be non-negative")
     output = args.output or Path(f"benchmark_{args.backend}.json")
     return Benchmark(
-        args.backend, output, args.port, args.iterations, args.warmup
+        args.backend,
+        output,
+        args.port,
+        args.iterations,
+        args.warmup,
+        args.cert_dir,
     ).run()
 
 

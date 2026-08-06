@@ -28,7 +28,7 @@ The PoC serves to:
 
 ### Scripts
 
-- **benchmark.sh** - Automated benchmarking script
+- **benchmark.py** - Automated benchmarking CLI
   - Generates test certificates
   - Starts/stops server automatically
   - Runs comprehensive benchmarks
@@ -193,17 +193,17 @@ rm test_cert.csr
 
 ```bash
 # Benchmark both backends (recommended)
-./benchmark.sh
+uv run --script benchmark.py
 
 # Benchmark specific backend
-./benchmark.sh --backend gnutls
-./benchmark.sh --backend wolfssl
+uv run --script benchmark.py --backend gnutls
+uv run --script benchmark.py --backend wolfssl
 
 # Custom iterations
-./benchmark.sh --iterations 5000
+uv run --script benchmark.py --iterations 5000
 
 # Custom output directory
-./benchmark.sh --output ./my_results
+uv run --script benchmark.py --output ./my_results
 ```
 
 **Compare results**
@@ -356,7 +356,7 @@ sudo apt-get install libwolfssl-dev
 **Error: Failed to load certificate**
 ```
 Solution: Generate test certificates (see above)
-./benchmark.sh  # Generates automatically
+uv run --script benchmark.py  # Generates automatically
 ```
 
 **Error: Connection refused**

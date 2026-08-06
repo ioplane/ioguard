@@ -16,9 +16,9 @@ The benchmarking infrastructure serves several critical purposes:
 
 ## Components
 
-### 1. benchmark.sh
+### 1. benchmark.py
 
-**Location**: `/opt/projects/repositories/ioguard/tests/poc/benchmark.sh`
+**Location**: `/opt/projects/repositories/ioguard/tests/poc/benchmark.py`
 
 **Purpose**: Automated benchmark execution script
 
@@ -34,17 +34,17 @@ The benchmarking infrastructure serves several critical purposes:
 **Usage**:
 ```bash
 # Test both backends (recommended)
-./benchmark.sh
+uv run --script tests/poc/benchmark.py
 
 # Test specific backend
-./benchmark.sh --backend gnutls
-./benchmark.sh --backend wolfssl
+uv run --script tests/poc/benchmark.py --backend gnutls
+uv run --script tests/poc/benchmark.py --backend wolfssl
 
 # Custom iterations
-./benchmark.sh --iterations 5000
+uv run --script tests/poc/benchmark.py --iterations 5000
 
 # Custom output directory
-./benchmark.sh --output ./my_results
+uv run --script tests/poc/benchmark.py --output ./my_results
 ```
 
 **Parameters**:
@@ -265,13 +265,13 @@ The benchmark script automatically generates self-signed certificates if they do
 **Test both backends (recommended)**:
 ```bash
 cd tests/poc
-./benchmark.sh
+uv run --script tests/poc/benchmark.py
 ```
 
 **Test specific backend**:
 ```bash
-./benchmark.sh --backend gnutls
-./benchmark.sh --backend wolfssl
+uv run --script tests/poc/benchmark.py --backend gnutls
+uv run --script tests/poc/benchmark.py --backend wolfssl
 ```
 
 **Compare results**:
@@ -283,12 +283,12 @@ uv run --script ./compare.py ./results
 
 **Custom iterations for longer test**:
 ```bash
-./benchmark.sh --iterations 10000
+uv run --script tests/poc/benchmark.py --iterations 10000
 ```
 
 **Custom output directory**:
 ```bash
-./benchmark.sh --output /tmp/my_benchmarks
+uv run --script tests/poc/benchmark.py --output /tmp/my_benchmarks
 uv run --script ./compare.py /tmp/my_benchmarks
 ```
 
@@ -298,7 +298,7 @@ podman run --rm \
   -v /opt/projects/repositories/ioguard:/workspace:Z \
   -w /workspace \
   localhost/ioguard-dev:latest \
-  bash -c "cd tests/poc && ./benchmark.sh"
+  uv run --script tests/poc/benchmark.py
 ```
 
 ## Interpreting Results
@@ -368,9 +368,9 @@ Latency (1KB):
 
 **Root Cause**: wolfSSL installed in `/usr/local/lib` which isn't in default library search path.
 
-**Status**: Fixed in benchmark.sh
+**Status**: Fixed in benchmark.py
 
-**Solution**: benchmark.sh now sets `LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"` before executing binaries.
+**Solution**: benchmark.py preserves `LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"` before executing binaries.
 
 **Impact**: Low - Resolved
 
@@ -380,7 +380,7 @@ Latency (1KB):
 - **Disable CPU frequency scaling**: `sudo cpupower frequency-set --governor performance`
 - **Disable turbo boost**: Ensures consistent CPU performance
 - **Close unnecessary applications**: Reduce system load variance
-- **Use isolated CPU cores**: `taskset -c 0-3 ./benchmark.sh` (optional)
+- **Use isolated CPU cores**: `taskset -c 0-3 uv run --script tests/poc/benchmark.py` (optional)
 
 ### 2. Benchmark Execution
 - **Run multiple times**: Minimum 3 runs, take average
