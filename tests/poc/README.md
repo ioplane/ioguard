@@ -34,7 +34,7 @@ The PoC serves to:
   - Runs comprehensive benchmarks
   - Collects system resource metrics
 
-- **compare.sh** - Results comparison script
+- **compare.py** - Results comparison script
   - Parses JSON benchmark results
   - Calculates performance deltas
   - Applies GO/NO-GO decision criteria (±10%)
@@ -210,7 +210,7 @@ rm test_cert.csr
 
 ```bash
 # Compare latest results
-./compare.sh results/
+uv run --script compare.py results/
 
 # Output example:
 # === TLS Performance Comparison ===

@@ -60,9 +60,9 @@ The benchmarking infrastructure serves several critical purposes:
 - `resources_BACKEND_TIMESTAMP.txt`: System resource usage
 - `server_BACKEND.pid`: Server process ID (temporary)
 
-### 2. compare.sh
+### 2. compare.py
 
-**Location**: `/opt/projects/repositories/ioguard/tests/poc/compare.sh`
+**Location**: `/opt/projects/repositories/ioguard/tests/poc/compare.py`
 
 **Purpose**: Compare benchmark results between backends
 
@@ -76,7 +76,7 @@ The benchmarking infrastructure serves several critical purposes:
 **Usage**:
 ```bash
 # Compare latest results in directory
-./compare.sh ./results
+uv run --script ./compare.py ./results
 
 # Results will show:
 # - GnuTLS baseline metrics
@@ -276,7 +276,7 @@ cd tests/poc
 
 **Compare results**:
 ```bash
-./compare.sh ./results
+uv run --script ./compare.py ./results
 ```
 
 ### Advanced Usage
@@ -289,7 +289,7 @@ cd tests/poc
 **Custom output directory**:
 ```bash
 ./benchmark.sh --output /tmp/my_benchmarks
-./compare.sh /tmp/my_benchmarks
+uv run --script ./compare.py /tmp/my_benchmarks
 ```
 
 **Benchmark in container**:

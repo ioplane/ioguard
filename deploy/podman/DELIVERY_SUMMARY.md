@@ -76,7 +76,7 @@ Production-grade containerized development environment for ioguard has been succ
 | Script | Purpose | Features |
 |--------|---------|----------|
 | push-image.sh | Push images to registry | Authentication check, digest verification, signing support |
-| inspect-images.sh | Inspect all images | Size, layers, labels, architecture, environment |
+| image_inspect.py | Inspect all images | Size, layers, labels, architecture, environment |
 
 ### 6. Volume Management Scripts (2 files)
 
@@ -99,8 +99,8 @@ Production-grade containerized development environment for ioguard has been succ
 
 | Script | Purpose | Checks |
 |--------|---------|--------|
-| verify-rootless.sh | Verify rootless setup | 10 checks: user namespaces, subuid/subgid, crun, fuse-overlayfs, etc. |
-| verify-selinux.sh | Verify SELinux config | 8 checks: SELinux status, contexts, labels, policies |
+| container_verify.py rootless | Verify rootless setup | 10 checks: user namespaces, subuid/subgid, crun, fuse-overlayfs, etc. |
+| container_verify.py selinux | Verify SELinux config | 8 checks: SELinux status, contexts, labels, policies |
 
 ### 8. Documentation (4 files)
 
@@ -178,11 +178,10 @@ Production-grade containerized development environment for ioguard has been succ
     │   ├── build-build.sh          # Build image
     │   ├── build-ci.sh             # CI image
     │   ├── push-image.sh           # Push to registry
-    │   ├── inspect-images.sh       # Inspect images
+    │   ├── image_inspect.py        # Inspect images
     │   ├── backup-volumes.sh       # Backup volumes
     │   ├── restore-volumes.sh      # Restore volumes
-    │   ├── verify-rootless.sh      # Verify rootless setup
-    │   └── verify-selinux.sh       # Verify SELinux
+    │   └── container_verify.py    # Verify rootless and SELinux support
     │
     ├── docs/                       # Documentation
     │   ├── CONTAINER_ARCHITECTURE.md
@@ -274,8 +273,8 @@ LDFLAGS="-Wl,-z,relro -Wl,-z,now"
 cd /opt/projects/repositories/ioguard/deploy/podman
 
 # Verify prerequisites
-./scripts/verify-rootless.sh
-./scripts/verify-selinux.sh
+uv run --script scripts/container_verify.py rootless
+uv run --script scripts/container_verify.py selinux
 
 # Build all containers
 make build-all
@@ -454,4 +453,3 @@ The infrastructure is ready for immediate use in development and can be deployed
 **Delivered By**: Claude Code (Anthropic)  
 **Project**: ioguard v2.0.0-alpha.1  
 **Status**: ✅ COMPLETE
-

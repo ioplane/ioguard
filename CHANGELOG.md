@@ -43,5 +43,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Project renamed from wolfguard to ioguard (`iog_` prefix, `IOGUARD_` guards).
 - License changed from GPLv2 to GPLv3 (wolfSSL dependency requirement).
+- Rootless Podman and SELinux verification now use the modular `container_verify.py` CLI.
+- Local image inspection now uses `image_inspect.py` with structured Skopeo JSON parsing.
+- Benchmark certificate generation now uses an explicit OpenSSL argv-based Python CLI.
+- Benchmark GO/NO-GO comparison now uses deterministic JSON parsing in `compare_results.py`.
+- PoC GnuTLS/wolfSSL comparison now uses `tests/poc/compare.py`.
+- TLS benchmark execution now uses `tests/bench/benchmark.py` with explicit process and socket handling.
+
+### Removed
+
+- Removed the separate `verify-rootless.sh` and `verify-selinux.sh` entrypoints.
+- Removed the `inspect-images.sh` entrypoint.
+- Removed the `generate_certs.sh` entrypoint.
+- Removed the `compare_results.sh` entrypoint.
+- Removed the `tests/poc/compare.sh` entrypoint.
+- Removed the `tests/bench/benchmark.sh` entrypoint.
 
 [Unreleased]: https://github.com/dantte-lp/ioguard/commits/master

@@ -333,7 +333,7 @@ main() {
     print_msg "$BLUE" "Results saved to: $OUTPUT_DIR"
     echo ""
     print_msg "$YELLOW" "To compare results, run:"
-    print_msg "$YELLOW" "  $SCRIPT_DIR/compare.sh $OUTPUT_DIR"
+    print_msg "$YELLOW" "  uv run --script $SCRIPT_DIR/compare.py $OUTPUT_DIR"
 }
 
 # Cleanup on exit
