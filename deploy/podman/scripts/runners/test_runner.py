@@ -8,6 +8,8 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from llvm_coverage import collect, test_environment
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -16,29 +18,47 @@ def main() -> int:
     args = parser.parse_args()
     workspace = args.workspace or Path("/workspace")
     reports = args.coverage_reports or workspace / "coverage-reports"
-    build = workspace / "build"
-    if not build.is_dir():
-        raise SystemExit(f"build directory not found: {build}")
     subprocess.run(
         [
-            "meson",
-            "test",
-            "-C",
-            str(build),
-            "--verbose",
-            "--timeout-multiplier=2",
-            "--print-errorlogs",
+            "cmake",
+            "--preset",
+            "clang-debug",
+            "-DBUILD_DOCUMENTATION=OFF",
+            "-DENABLE_COVERAGE=ON",
         ],
         cwd=workspace,
         check=True,
     )
-    coverage = build / "meson-logs" / "coveragereport"
-    if coverage.is_dir():
-        reports.mkdir(parents=True, exist_ok=True)
-        target = reports / coverage.name
-        if target.exists():
-            shutil.rmtree(target)
-        shutil.copytree(coverage, target)
+    subprocess.run(
+        ["cmake", "--build", "--preset", "clang-debug", "--parallel"],
+        cwd=workspace,
+        check=True,
+    )
+    build = workspace / "build" / "clang-debug"
+    subprocess.run(
+        ["ctest", "--preset", "clang-debug", "--output-on-failure", "--parallel", "4"],
+        cwd=workspace,
+        check=True,
+        env=test_environment(build),
+    )
+    reports.mkdir(parents=True, exist_ok=True)
+    if shutil.which("llvm-profdata"):
+        collect(build, reports, workspace)
+    elif shutil.which("gcovr"):
+        coverage = reports / "coverage.html"
+        subprocess.run(
+            [
+                "gcovr",
+                "--root",
+                str(workspace),
+                "--object-directory",
+                str(build),
+                "--html-details",
+                str(coverage),
+            ],
+            cwd=workspace,
+            check=False,
+        )
     integration = workspace / "tests" / "integration"
     if integration.is_dir():
         print(

@@ -94,8 +94,13 @@ endif()
 
 # Code coverage
 if(ENABLE_COVERAGE)
-    add_compile_options(-fprofile-arcs -ftest-coverage)
-    add_link_options(-lgcov --coverage)
+    if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
+        add_compile_options(-fprofile-instr-generate -fcoverage-mapping)
+        add_link_options(-fprofile-instr-generate)
+    else()
+        add_compile_options(-fprofile-arcs -ftest-coverage)
+        add_link_options(-lgcov --coverage)
+    endif()
 endif()
 
 # ============================================================================

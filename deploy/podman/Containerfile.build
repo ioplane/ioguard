@@ -16,7 +16,6 @@ LABEL org.opencontainers.image.title="ioguard-build" \
 RUN dnf install -y \
         rpm-build \
         rpmdevtools \
-        rpmlint \
         createrepo_c \
     && dnf clean all \
     && rm -rf /var/cache/dnf

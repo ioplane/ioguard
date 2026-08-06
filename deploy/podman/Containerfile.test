@@ -15,36 +15,26 @@ LABEL org.opencontainers.image.title="ioguard-test" \
 
 RUN dnf install -y \
         check-devel \
-        cmocka-devel \
-        python3-pytest \
-        python3-coverage \
-        python3-requests \
-        python3-pexpect \
-        lcov \
-        gcovr \
+        libcmocka-devel \
         clang-tools-extra \
         iproute \
         iputils \
         bind-utils \
-        tcpdump \
-        wireshark-cli \
         nmap-ncat \
         socat \
         iperf3 \
-        ltrace \
-        perf \
         sysstat \
-        htop \
     && dnf clean all \
     && rm -rf /var/cache/dnf \
     && mkdir -p /workspace/test-results /workspace/coverage-reports /workspace/test-logs \
-    && chown -R developer:developer /workspace
+    && chown -R ioplane:ioplane /workspace
 
 COPY deploy/podman/scripts/runners/test_runner.py /usr/local/bin/run-tests
 COPY deploy/podman/scripts/runners/benchmark_runner.py /usr/local/bin/run-benchmarks
+COPY deploy/podman/scripts/runners/llvm_coverage.py /usr/local/bin/llvm_coverage.py
 RUN chmod 0755 /usr/local/bin/run-tests /usr/local/bin/run-benchmarks
 
-USER developer
+USER ioplane
 WORKDIR /workspace
 ENV TEST_RESULTS=/workspace/test-results \
     COVERAGE_REPORTS=/workspace/coverage-reports \

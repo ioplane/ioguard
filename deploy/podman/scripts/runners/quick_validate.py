@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run the fast ioguard build and smoke-test lane."""
+"""Run the fast ioguard CMake build and CTest lane."""
 
 from __future__ import annotations
 
@@ -13,13 +13,24 @@ def main() -> int:
     parser.add_argument("--workspace", type=Path)
     args = parser.parse_args()
     workspace = args.workspace or Path("/workspace")
-    build = workspace / "build-quick"
     subprocess.run(
-        ["meson", "setup", str(build), "--buildtype=debug"], cwd=workspace, check=True
+        [
+            "cmake",
+            "--preset",
+            "clang-debug",
+            "-DBUILD_DOCUMENTATION=OFF",
+            "-DUSE_WOLFSSL=ON",
+        ],
+        cwd=workspace,
+        check=True,
     )
-    subprocess.run(["meson", "compile", "-C", str(build)], cwd=workspace, check=True)
+    subprocess.run(
+        ["cmake", "--build", "--preset", "clang-debug", "--parallel"],
+        cwd=workspace,
+        check=True,
+    )
     return subprocess.run(
-        ["meson", "test", "-C", str(build), "--suite=smoke", "--timeout-multiplier=1"],
+        ["ctest", "--preset", "clang-debug", "--output-on-failure", "--parallel", "4"],
         cwd=workspace,
         check=False,
     ).returncode

@@ -22,25 +22,21 @@ def main() -> int:
     args = parser.parse_args()
     workspace = args.workspace or Path("/workspace")
     artifacts = args.artifacts or Path("/artifacts")
-    build = workspace / "build"
     run(
         [
-            "meson",
-            "setup",
-            str(build),
-            "--buildtype=release",
-            "--strip",
-            "--werror",
-            "-Db_lto=true",
-            "-Db_pie=true",
-            "-Db_ndebug=true",
+            "cmake",
+            "--preset",
+            "clang-release",
+            "-DBUILD_TESTING=OFF",
+            "-DBUILD_DOCUMENTATION=OFF",
+            "-DUSE_WOLFSSL=ON",
         ],
         workspace,
     )
-    run(["meson", "compile", "-C", str(build)], workspace)
+    run(["cmake", "--build", "--preset", "clang-release", "--parallel"], workspace)
     for directory in ("bin", "lib", "share"):
         (artifacts / directory).mkdir(parents=True, exist_ok=True)
-    source = build / "src"
+    source = workspace / "build" / "clang-release" / "src"
     if source.is_dir():
         for path in source.rglob("*"):
             if path.is_file() and path.stat().st_mode & 0o111:

@@ -52,6 +52,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Volume backup/restore and registry image copy now use the modular `container_ops.py` CLI.
 - PoC backend benchmarking and compatibility testing now use `tests/poc/benchmark.py` and `tests/poc/run_tests.py`.
 - OCI image builds now use `container_build.py` with layered target-specific Containerfiles and Python runtime runners.
+- Container runners now use the repository CMake presets with Clang 22, and coverage selects LLVM instrumentation for Clang or gcov for GCC.
+- Oracle Linux 10 container layers now match the available package names, install the required `libnl3-devel` headers, and restore the non-root runtime user after package installation.
 
 ### Removed
 

@@ -8,9 +8,17 @@ import shutil
 import subprocess
 from pathlib import Path
 
+from llvm_coverage import collect, test_environment
 
-def run(command: list[str], cwd: Path, *, check: bool = True) -> int:
-    return subprocess.run(command, cwd=cwd, check=check).returncode
+
+def run(
+    command: list[str],
+    cwd: Path,
+    *,
+    check: bool = True,
+    env: dict[str, str] | None = None,
+) -> int:
+    return subprocess.run(command, cwd=cwd, check=check, env=env).returncode
 
 
 def main() -> int:
@@ -20,37 +28,43 @@ def main() -> int:
     args = parser.parse_args()
     workspace = args.workspace or Path("/workspace")
     reports = args.reports or workspace / "ci-reports"
-    build = workspace / "build"
     reports.mkdir(parents=True, exist_ok=True)
     run(
         [
-            "meson",
-            "setup",
-            str(build),
-            "--buildtype=release",
-            "--werror",
-            "-Db_coverage=true",
-            "-Db_lto=true",
+            "cmake",
+            "--preset",
+            "clang-debug",
+            "-DBUILD_DOCUMENTATION=OFF",
+            "-DUSE_WOLFSSL=ON",
+            "-DENABLE_COVERAGE=ON",
         ],
         workspace,
     )
-    run(["meson", "compile", "-C", str(build)], workspace)
+    run(["cmake", "--build", "--preset", "clang-debug", "--parallel"], workspace)
+    build = workspace / "build" / "clang-debug"
+    test_env = test_environment(build)
     run(
-        [
-            "meson",
-            "test",
-            "-C",
-            str(build),
-            "--verbose",
-            "--timeout-multiplier=2",
-            "--print-errorlogs",
-        ],
+        ["ctest", "--preset", "clang-debug", "--output-on-failure", "--parallel", "4"],
         workspace,
+        env=test_env,
     )
-    run(["ninja", "-C", str(build), "coverage-html"], workspace, check=False)
-    coverage = build / "meson-logs" / "coveragereport"
-    if coverage.is_dir():
-        shutil.copytree(coverage, reports / coverage.name, dirs_exist_ok=True)
+    if shutil.which("llvm-profdata"):
+        collect(build, reports, workspace)
+    elif shutil.which("gcovr"):
+        coverage = reports / "coverage.html"
+        run(
+            [
+                "gcovr",
+                "--root",
+                str(workspace),
+                "--object-directory",
+                str(build),
+                "--html-details",
+                str(coverage),
+            ],
+            workspace,
+            check=False,
+        )
     cppcheck = shutil.which("cppcheck")
     if cppcheck:
         run(
@@ -60,6 +74,8 @@ def main() -> int:
                 "--inconclusive",
                 "--xml",
                 "--xml-version=2",
+                "--output-file",
+                str(reports / "cppcheck.xml"),
                 "src/",
             ],
             workspace,

@@ -12,8 +12,8 @@ import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
 
-
 TARGETS = ("dev", "test", "build", "ci")
+NETWORK_MODES = ("bridge", "host", "none")
 IMAGE_NAMES = {
     "dev": "localhost/ioguard-dev:latest",
     "test": "localhost/ioguard-test:latest",
@@ -64,6 +64,7 @@ def build(
     image: str | None,
     base_image: str | None,
     log_level: str | None,
+    network: str,
 ) -> int:
     project_root = root().parent.parent
     deploy_root = root()
@@ -80,6 +81,8 @@ def build(
         "--format",
         "oci",
         "--layers",
+        "--network",
+        network,
         "--file",
         str(deploy_root / CONTAINERFILES[target]),
         "--tag",
@@ -107,8 +110,14 @@ def main() -> int:
     parser.add_argument(
         "--log-level", choices=("error", "warn", "info", "debug", "trace")
     )
+    parser.add_argument(
+        "--network",
+        choices=NETWORK_MODES,
+        default="host",
+        help="network namespace used only while building image layers",
+    )
     args = parser.parse_args()
-    return build(args.target, args.image, args.base_image, args.log_level)
+    return build(args.target, args.image, args.base_image, args.log_level, args.network)
 
 
 if __name__ == "__main__":

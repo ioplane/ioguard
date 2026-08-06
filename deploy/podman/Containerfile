@@ -14,6 +14,11 @@ FROM ${BASE_IMAGE}
 ARG OCI_REVISION=unknown
 ARG OCI_CREATED=1970-01-01T00:00:00Z
 
+# The shared base intentionally defaults to the unprivileged ioplane user.
+# Package installation and source builds require root; restore the secure
+# non-root runtime identity after all image mutation steps.
+USER root
+
 LABEL maintainer="ioguard development team"
 LABEL description="Development environment for ioguard with wolfSSL and modern C libraries"
 LABEL org.opencontainers.image.title="ioguard-dev"
@@ -453,6 +458,9 @@ RUN dnf install -y \
     tcpdump \
     && dnf clean all
 
+# libnl headers are required by the repository CMake configuration.
+RUN dnf install -y libnl3-devel && dnf clean all
+
 # FlameGraph tools
 RUN git clone --depth 1 https://github.com/brendangregg/FlameGraph.git /opt/flamegraph && \
     ln -sf /opt/flamegraph/stackcollapse-perf.pl /usr/local/bin/ && \
@@ -468,5 +476,6 @@ RUN mkdir -p /root/.config/ccache && \
 
 RUN ldconfig
 
+USER ioplane
 WORKDIR /workspace
 CMD ["/bin/bash"]
