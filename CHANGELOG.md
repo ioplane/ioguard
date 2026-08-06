@@ -46,11 +46,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rootless Podman and SELinux verification now use the modular `container_verify.py` CLI.
 - Local image inspection now uses `image_inspect.py` with structured Skopeo JSON parsing.
 - Benchmark certificate generation now uses an explicit OpenSSL argv-based Python CLI.
+- Benchmark GO/NO-GO comparison now uses deterministic JSON parsing in `compare_results.py`.
 
 ### Removed
 
 - Removed the separate `verify-rootless.sh` and `verify-selinux.sh` entrypoints.
 - Removed the `inspect-images.sh` entrypoint.
 - Removed the `generate_certs.sh` entrypoint.
+- Removed the `compare_results.sh` entrypoint.
 
 [Unreleased]: https://github.com/dantte-lp/ioguard/commits/master
