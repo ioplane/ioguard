@@ -297,7 +297,7 @@ make volumes-backup
 make volumes-restore
 
 # Restore from specific backup
-./scripts/restore-volumes.sh volumes/backups/20251029_143000/
+uv run --script ./scripts/container_ops.py restore volumes/backups/20251029_143000/
 ```
 
 ## Image Registry Operations
@@ -312,7 +312,7 @@ podman login ghcr.io
 make push-all
 
 # Push specific image
-./scripts/push-image.sh localhost/ioguard-dev:latest ghcr.io/dantte-lp/ioguard-dev:latest
+uv run --script ./scripts/container_ops.py push localhost/ioguard-dev:latest ghcr.io/dantte-lp/ioguard-dev:latest
 ```
 
 ### Inspect Images

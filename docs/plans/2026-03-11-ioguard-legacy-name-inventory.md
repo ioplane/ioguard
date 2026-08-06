@@ -80,7 +80,7 @@ config paths, or other operational identifiers that need a separate decision.
 - Generated or packaged artifact names still use `ioguard`
   - tarballs in [deploy/podman/scripts/build-build.sh](/opt/projects/repositories/ioguard/deploy/podman/scripts/build-build.sh)
 - Helper scripts still refer to old image names
-  - [deploy/podman/scripts/push-image.sh](/opt/projects/repositories/ioguard/deploy/podman/scripts/push-image.sh)
+  - [deploy/podman/scripts/container_ops.py](/opt/projects/repositories/ioguard/deploy/podman/scripts/container_ops.py)
   - [deploy/podman/scripts/inspect-images.sh](/opt/projects/repositories/ioguard/deploy/podman/scripts/inspect-images.sh)
 - Test fixtures still use `ioguard.toml`
   - [tests/fixtures/ioguard.toml](/opt/projects/repositories/ioguard/tests/fixtures/ioguard.toml)

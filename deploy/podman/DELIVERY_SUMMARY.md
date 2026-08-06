@@ -75,7 +75,7 @@ Production-grade containerized development environment for ioguard has been succ
 
 | Script | Purpose | Features |
 |--------|---------|----------|
-| push-image.sh | Push images to registry | Authentication check, digest verification, signing support |
+| container_ops.py push | Push images to registry | Authentication check, digest verification, signing support |
 | image_inspect.py | Inspect all images | Size, layers, labels, architecture, environment |
 
 ### 6. Volume Management Scripts (2 files)
@@ -84,8 +84,8 @@ Production-grade containerized development environment for ioguard has been succ
 
 | Script | Purpose | Features |
 |--------|---------|----------|
-| backup-volumes.sh | Backup all volumes | Compressed archives, manifest, checksums |
-| restore-volumes.sh | Restore volumes | From latest or specific backup, confirmation prompts |
+| container_ops.py backup | Backup all volumes | Compressed archives, manifest, checksums |
+| container_ops.py restore | Restore volumes | From latest or specific backup, confirmation prompts |
 
 **Backup Format**:
 - Location: `volumes/backups/YYYYMMDD_HHMMSS/`
@@ -177,10 +177,8 @@ Production-grade containerized development environment for ioguard has been succ
     │   ├── build-test.sh           # Test image
     │   ├── build-build.sh          # Build image
     │   ├── build-ci.sh             # CI image
-    │   ├── push-image.sh           # Push to registry
+    │   ├── container_ops.py        # Image push and volume operations
     │   ├── image_inspect.py        # Inspect images
-    │   ├── backup-volumes.sh       # Backup volumes
-    │   ├── restore-volumes.sh      # Restore volumes
     │   └── container_verify.py    # Verify rootless and SELinux support
     │
     ├── docs/                       # Documentation

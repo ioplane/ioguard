@@ -49,6 +49,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Benchmark GO/NO-GO comparison now uses deterministic JSON parsing in `compare_results.py`.
 - PoC GnuTLS/wolfSSL comparison now uses `tests/poc/compare.py`.
 - TLS benchmark execution now uses `tests/bench/benchmark.py` with explicit process and socket handling.
+- Volume backup/restore and registry image copy now use the modular `container_ops.py` CLI.
 
 ### Removed
 
@@ -58,5 +59,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the `compare_results.sh` entrypoint.
 - Removed the `tests/poc/compare.sh` entrypoint.
 - Removed the `tests/bench/benchmark.sh` entrypoint.
+- Removed the `backup-volumes.sh`, `restore-volumes.sh`, and `push-image.sh` entrypoints.
 
 [Unreleased]: https://github.com/dantte-lp/ioguard/commits/master

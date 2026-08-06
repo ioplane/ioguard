@@ -136,19 +136,19 @@ push-all: push-dev push-test push-build push-ci ## Push all images to registry
 
 push-dev: ## Push development image to registry
 	@echo "$(YELLOW)Pushing development image...$(NC)"
-	@bash scripts/push-image.sh $(DEV_IMAGE) $(REGISTRY)/$(IMAGE_PREFIX)-dev:latest
+	@uv run --script scripts/container_ops.py push $(DEV_IMAGE) $(REGISTRY)/$(IMAGE_PREFIX)-dev:latest
 
 push-test: ## Push test image to registry
 	@echo "$(YELLOW)Pushing test image...$(NC)"
-	@bash scripts/push-image.sh $(TEST_IMAGE) $(REGISTRY)/$(IMAGE_PREFIX)-test:latest
+	@uv run --script scripts/container_ops.py push $(TEST_IMAGE) $(REGISTRY)/$(IMAGE_PREFIX)-test:latest
 
 push-build: ## Push build image to registry
 	@echo "$(YELLOW)Pushing build image...$(NC)"
-	@bash scripts/push-image.sh $(BUILD_IMAGE) $(REGISTRY)/$(IMAGE_PREFIX)-build:latest
+	@uv run --script scripts/container_ops.py push $(BUILD_IMAGE) $(REGISTRY)/$(IMAGE_PREFIX)-build:latest
 
 push-ci: ## Push CI image to registry
 	@echo "$(YELLOW)Pushing CI image...$(NC)"
-	@bash scripts/push-image.sh $(CI_IMAGE) $(REGISTRY)/$(IMAGE_PREFIX)-ci:latest
+	@uv run --script scripts/container_ops.py push $(CI_IMAGE) $(REGISTRY)/$(IMAGE_PREFIX)-ci:latest
 
 ##@ Inspect Images
 
@@ -174,11 +174,11 @@ inspect-ci: ## Inspect CI image with Skopeo
 
 volumes-backup: ## Backup all named volumes
 	@echo "$(YELLOW)Backing up volumes...$(NC)"
-	@bash scripts/backup-volumes.sh
+	@uv run --script scripts/container_ops.py backup
 
 volumes-restore: ## Restore volumes from backup
 	@echo "$(YELLOW)Restoring volumes...$(NC)"
-	@bash scripts/restore-volumes.sh
+	@uv run --script scripts/container_ops.py restore
 
 volumes-clean: ## Remove all named volumes (WARNING: data loss!)
 	@echo "$(RED)WARNING: This will delete all volume data!$(NC)"

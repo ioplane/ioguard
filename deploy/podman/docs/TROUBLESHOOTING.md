@@ -476,13 +476,13 @@ tar: /volume: Cannot open: Permission denied
 
 1. Use container method:
 ```bash
-# Edit backup-volumes.sh to always use container method
+# Edit container_ops.py to always use the container backup method
 # Line ~65: Force container backup
 ```
 
 2. Run with sudo (not recommended):
 ```bash
-sudo ./scripts/backup-volumes.sh
+sudo uv run --script ./scripts/container_ops.py backup
 ```
 
 3. Fix volume ownership:
