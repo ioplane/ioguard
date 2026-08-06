@@ -23,10 +23,10 @@ Start here if something isn't working:
 make info
 
 # Verify rootless setup
-./scripts/verify-rootless.sh
+uv run --script scripts/container_verify.py rootless
 
 # Verify SELinux
-./scripts/verify-selinux.sh
+uv run --script scripts/container_verify.py selinux
 
 # Check running containers
 podman ps -a
@@ -154,7 +154,7 @@ Error: OCI permission denied
 
 1. Verify rootless configuration:
 ```bash
-./scripts/verify-rootless.sh
+uv run --script scripts/container_verify.py rootless
 ```
 
 2. Check subuid/subgid:
@@ -316,7 +316,7 @@ audit: type=1400 audit(1234567890.123:456): avc:  denied  { read } for  pid=1234
 
 1. Run verification:
 ```bash
-./scripts/verify-selinux.sh
+uv run --script scripts/container_verify.py selinux
 ```
 
 2. Check audit log:

@@ -203,11 +203,11 @@ validate: ## Run quick validation in CI container
 
 verify-rootless: ## Verify containers can run in rootless mode
 	@echo "$(YELLOW)Verifying rootless mode...$(NC)"
-	@bash scripts/verify-rootless.sh
+	@uv run --script scripts/container_verify.py rootless
 
 verify-selinux: ## Verify SELinux labels on volumes
 	@echo "$(YELLOW)Verifying SELinux labels...$(NC)"
-	@bash scripts/verify-selinux.sh
+	@uv run --script scripts/container_verify.py selinux
 
 ##@ Cleanup
 

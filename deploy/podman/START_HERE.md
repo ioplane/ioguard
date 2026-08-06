@@ -35,8 +35,8 @@ echo "user.max_user_namespaces=28633" | sudo tee /etc/sysctl.d/userns.conf
 sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $USER
 
 # Verify
-./scripts/verify-rootless.sh
-./scripts/verify-selinux.sh
+uv run --script scripts/container_verify.py rootless
+uv run --script scripts/container_verify.py selinux
 ```
 
 ### 3. Build Containers
@@ -120,14 +120,14 @@ make clean-all
 ### Permission Denied
 
 ```bash
-./scripts/verify-rootless.sh
+uv run --script scripts/container_verify.py rootless
 grep "^$USER:" /etc/subuid /etc/subgid
 ```
 
 ### SELinux Issues
 
 ```bash
-./scripts/verify-selinux.sh
+uv run --script scripts/container_verify.py selinux
 chcon -R -t container_file_t /opt/projects/repositories/ioguard
 ```
 

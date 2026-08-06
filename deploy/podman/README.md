@@ -80,8 +80,8 @@ sudo usermod --add-subuids 100000-165535 --add-subgids 100000-165535 $USER
 sudo dnf install fuse-overlayfs slirp4netns container-selinux
 
 # Verify
-./scripts/verify-rootless.sh
-./scripts/verify-selinux.sh
+uv run --script scripts/container_verify.py rootless
+uv run --script scripts/container_verify.py selinux
 ```
 
 ## Installation
@@ -330,14 +330,14 @@ skopeo inspect containers-storage:localhost/ioguard-dev:latest
 ### Permission Denied
 
 ```bash
-./scripts/verify-rootless.sh
+uv run --script scripts/container_verify.py rootless
 grep "^$USER:" /etc/subuid /etc/subgid
 ```
 
 ### SELinux Denials
 
 ```bash
-./scripts/verify-selinux.sh
+uv run --script scripts/container_verify.py selinux
 sudo ausearch -m avc -ts recent | grep container
 chcon -R -t container_file_t /opt/projects/repositories/ioguard
 ```
