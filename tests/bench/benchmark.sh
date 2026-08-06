@@ -65,7 +65,7 @@ check_prerequisites() {
     # Check if certificates exist
     if [ ! -f "${CERT_DIR}/server-cert.pem" ] || [ ! -f "${CERT_DIR}/server-key.pem" ]; then
         log_error "Server certificates not found in ${CERT_DIR}"
-        log_info "Run: tests/bench/generate_certs.sh"
+        log_info "Run: uv run --script tests/bench/generate_certs.py"
         exit 1
     fi
 
