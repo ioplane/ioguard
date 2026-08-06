@@ -48,6 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Benchmark certificate generation now uses an explicit OpenSSL argv-based Python CLI.
 - Benchmark GO/NO-GO comparison now uses deterministic JSON parsing in `compare_results.py`.
 - PoC GnuTLS/wolfSSL comparison now uses `tests/poc/compare.py`.
+- TLS benchmark execution now uses `tests/bench/benchmark.py` with explicit process and socket handling.
 
 ### Removed
 
@@ -56,5 +57,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the `generate_certs.sh` entrypoint.
 - Removed the `compare_results.sh` entrypoint.
 - Removed the `tests/poc/compare.sh` entrypoint.
+- Removed the `tests/bench/benchmark.sh` entrypoint.
 
 [Unreleased]: https://github.com/dantte-lp/ioguard/commits/master
