@@ -12,19 +12,20 @@ Production-grade containerized development environment for ioguard has been succ
 
 ## Deliverables
 
-### 1. Buildah Build Scripts (4 files)
+### 1. OCI Image Build CLI and Containerfiles
 
-**Location**: `/opt/projects/repositories/ioguard/deploy/podman/scripts/`
+**Location**: `/opt/projects/repositories/ioguard/deploy/podman/`
 
 | Script | Purpose | Lines | Build Time | Image Size |
 |--------|---------|-------|------------|------------|
-| build-dev.sh | Development environment | 483 | 8-10 min | <500MB |
-| build-test.sh | Test environment | 167 | 1-2 min | <500MB |
-| build-build.sh | Build environment | 391 | 6-8 min | <200MB |
-| build-ci.sh | CI/CD environment | 221 | 1 min | <200MB |
+| container_build.py dev | Development environment | OCI layers | cache-dependent | shared base |
+| container_build.py test | Test environment | OCI layers | cache-dependent | dev-derived |
+| container_build.py build | Build environment | OCI layers | cache-dependent | dev-derived |
+| container_build.py ci | CI/CD environment | OCI layers | cache-dependent | build-derived |
 
 **Key Features**:
-- Latest library versions (wolfSSL 5.8.2, libuv 1.51.0, llhttp 9.3.0, cJSON 1.7.18, mimalloc 2.2.4)
+- Shared Python build CLI with target-specific OCI Containerfiles
+- Layer reuse: test/build derive from dev; CI derives from build
 - Security hardening (stack protectors, RELRO, FORTIFY_SOURCE)
 - Debug vs release optimization strategies
 - Reproducible builds with pinned versions
@@ -173,10 +174,7 @@ Production-grade containerized development environment for ioguard has been succ
     │   └── storage.conf            # Storage driver config
     │
     ├── scripts/                    # Build and management scripts
-    │   ├── build-dev.sh            # Development image
-    │   ├── build-test.sh           # Test image
-    │   ├── build-build.sh          # Build image
-    │   ├── build-ci.sh             # CI image
+    │   ├── container_build.py      # Shared Python build CLI
     │   ├── container_ops.py        # Image push and volume operations
     │   ├── image_inspect.py        # Inspect images
     │   └── container_verify.py    # Verify rootless and SELinux support
@@ -421,7 +419,7 @@ make inspect-all
 
 ### Update Procedure
 1. Check for new library versions
-2. Update version variables in build scripts
+2. Update version arguments in the relevant Containerfile
 3. Test build locally
 4. Run full test suite
 5. Update documentation if needed

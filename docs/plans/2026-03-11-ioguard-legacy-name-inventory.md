@@ -65,7 +65,7 @@ config paths, or other operational identifiers that need a separate decision.
 - OCI labels
   - `io.ioguard.version`
   - `io.ioguard.environment`
-  - [deploy/podman/scripts/build-dev.sh](/opt/projects/repositories/ioguard/deploy/podman/scripts/build-dev.sh)
+  - [deploy/podman/scripts/container_build.py](/opt/projects/repositories/ioguard/deploy/podman/scripts/container_build.py)
 - Logger target and other operational strings
   - [src/log/iog_log.c](/opt/projects/repositories/ioguard/src/log/iog_log.c)
 - Firewall/nft table naming
@@ -78,10 +78,10 @@ config paths, or other operational identifiers that need a separate decision.
 ### Artifact and utility names
 
 - Generated or packaged artifact names still use `ioguard`
-  - tarballs in [deploy/podman/scripts/build-build.sh](/opt/projects/repositories/ioguard/deploy/podman/scripts/build-build.sh)
+  - tarballs in [deploy/podman/scripts/runners/build_release.py](/opt/projects/repositories/ioguard/deploy/podman/scripts/runners/build_release.py)
 - Helper scripts still refer to old image names
   - [deploy/podman/scripts/container_ops.py](/opt/projects/repositories/ioguard/deploy/podman/scripts/container_ops.py)
-  - [deploy/podman/scripts/inspect-images.sh](/opt/projects/repositories/ioguard/deploy/podman/scripts/inspect-images.sh)
+  - [deploy/podman/scripts/image_inspect.py](/opt/projects/repositories/ioguard/deploy/podman/scripts/image_inspect.py)
 - Test fixtures still use `ioguard.toml`
   - [tests/fixtures/ioguard.toml](/opt/projects/repositories/ioguard/tests/fixtures/ioguard.toml)
 

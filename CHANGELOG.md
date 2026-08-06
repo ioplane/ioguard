@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - TLS benchmark execution now uses `tests/bench/benchmark.py` with explicit process and socket handling.
 - Volume backup/restore and registry image copy now use the modular `container_ops.py` CLI.
 - PoC backend benchmarking and compatibility testing now use `tests/poc/benchmark.py` and `tests/poc/run_tests.py`.
+- OCI image builds now use `container_build.py` with layered target-specific Containerfiles and Python runtime runners.
 
 ### Removed
 
@@ -61,6 +62,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed the `tests/poc/compare.sh` entrypoint.
 - Removed the `tests/bench/benchmark.sh` entrypoint.
 - Removed the `tests/poc/benchmark.sh` and `tests/poc/run_tests.sh` entrypoints.
+- Removed the four Buildah build shell entrypoints.
 - Removed the `backup-volumes.sh`, `restore-volumes.sh`, and `push-image.sh` entrypoints.
 
 [Unreleased]: https://github.com/dantte-lp/ioguard/commits/master

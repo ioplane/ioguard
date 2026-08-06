@@ -1,0 +1,30 @@
+# CI image derived from the release build image.
+ARG BASE_IMAGE=localhost/ioguard-build:latest
+FROM ${BASE_IMAGE}
+
+ARG OCI_REVISION=unknown
+ARG OCI_CREATED=1970-01-01T00:00:00Z
+
+USER root
+LABEL org.opencontainers.image.title="ioguard-ci" \
+      org.opencontainers.image.description="CI, validation, and static-analysis environment for ioguard" \
+      org.opencontainers.image.revision="${OCI_REVISION}" \
+      org.opencontainers.image.created="${OCI_CREATED}" \
+      org.opencontainers.image.version="2.0.0-alpha.1" \
+      org.opencontainers.image.licenses="GPL-3.0-or-later"
+
+RUN dnf install -y git curl jq cppcheck \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf \
+    && mkdir -p /workspace/ci-reports \
+    && chown -R builder:builder /workspace
+
+COPY deploy/podman/scripts/runners/ci_runner.py /usr/local/bin/ci-runner
+COPY deploy/podman/scripts/runners/quick_validate.py /usr/local/bin/quick-validate
+COPY deploy/podman/scripts/runners/run_lint.py /usr/local/bin/run-lint
+RUN chmod 0755 /usr/local/bin/ci-runner /usr/local/bin/quick-validate /usr/local/bin/run-lint
+
+USER builder
+WORKDIR /workspace
+ENV CI_REPORTS=/workspace/ci-reports
+CMD ["/usr/local/bin/ci-runner"]

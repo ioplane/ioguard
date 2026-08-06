@@ -32,11 +32,8 @@ TEST_IMAGE := localhost/$(IMAGE_PREFIX)-test:latest
 BUILD_IMAGE := localhost/$(IMAGE_PREFIX)-build:latest
 CI_IMAGE := localhost/$(IMAGE_PREFIX)-ci:latest
 
-# Build scripts
-BUILD_DEV_SCRIPT := scripts/build-dev.sh
-BUILD_TEST_SCRIPT := scripts/build-test.sh
-BUILD_BUILD_SCRIPT := scripts/build-build.sh
-BUILD_CI_SCRIPT := scripts/build-ci.sh
+# Modular Python build CLI
+BUILD_CLI := scripts/container_build.py
 
 # Colors for output
 RED := \033[0;31m
@@ -63,22 +60,22 @@ build-all: build-dev build-test build-build build-ci ## Build all container imag
 
 build-dev: ## Build development container image
 	@echo "$(YELLOW)Building development image...$(NC)"
-	@bash $(BUILD_DEV_SCRIPT)
+	@uv run --script $(BUILD_CLI) dev
 	@echo "$(GREEN)Development image built: $(DEV_IMAGE)$(NC)"
 
 build-test: build-dev ## Build test container image (requires dev image)
 	@echo "$(YELLOW)Building test image...$(NC)"
-	@bash $(BUILD_TEST_SCRIPT)
+	@uv run --script $(BUILD_CLI) test
 	@echo "$(GREEN)Test image built: $(TEST_IMAGE)$(NC)"
 
 build-build: build-dev ## Build build container image (requires dev image)
 	@echo "$(YELLOW)Building build image...$(NC)"
-	@bash $(BUILD_BUILD_SCRIPT)
+	@uv run --script $(BUILD_CLI) build
 	@echo "$(GREEN)Build image built: $(BUILD_IMAGE)$(NC)"
 
 build-ci: build-build ## Build CI container image (requires build image)
 	@echo "$(YELLOW)Building CI image...$(NC)"
-	@bash $(BUILD_CI_SCRIPT)
+	@uv run --script $(BUILD_CLI) ci
 	@echo "$(GREEN)CI image built: $(CI_IMAGE)$(NC)"
 
 ##@ Run Containers

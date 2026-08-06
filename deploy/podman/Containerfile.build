@@ -1,0 +1,35 @@
+# Release build image derived from the development image.
+ARG BASE_IMAGE=localhost/ioguard-dev:latest
+FROM ${BASE_IMAGE}
+
+ARG OCI_REVISION=unknown
+ARG OCI_CREATED=1970-01-01T00:00:00Z
+
+USER root
+LABEL org.opencontainers.image.title="ioguard-build" \
+      org.opencontainers.image.description="Release build environment for ioguard" \
+      org.opencontainers.image.revision="${OCI_REVISION}" \
+      org.opencontainers.image.created="${OCI_CREATED}" \
+      org.opencontainers.image.version="2.0.0-alpha.1" \
+      org.opencontainers.image.licenses="GPL-3.0-or-later"
+
+RUN dnf install -y \
+        rpm-build \
+        rpmdevtools \
+        rpmlint \
+        createrepo_c \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf
+
+RUN useradd --create-home --shell /bin/bash --uid 1000 --user-group builder \
+    && mkdir -p /workspace /artifacts \
+    && chown -R builder:builder /workspace /artifacts
+
+COPY deploy/podman/scripts/runners/build_release.py /usr/local/bin/build-release
+RUN chmod 0755 /usr/local/bin/build-release
+
+USER builder
+WORKDIR /workspace
+ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:/usr/local/lib64/pkgconfig \
+    LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+CMD ["/usr/local/bin/build-release"]

@@ -1,0 +1,52 @@
+# Test image derived from the development image.
+ARG BASE_IMAGE=localhost/ioguard-dev:latest
+FROM ${BASE_IMAGE}
+
+ARG OCI_REVISION=unknown
+ARG OCI_CREATED=1970-01-01T00:00:00Z
+
+USER root
+LABEL org.opencontainers.image.title="ioguard-test" \
+      org.opencontainers.image.description="Test and coverage environment for ioguard" \
+      org.opencontainers.image.revision="${OCI_REVISION}" \
+      org.opencontainers.image.created="${OCI_CREATED}" \
+      org.opencontainers.image.version="2.0.0-alpha.1" \
+      org.opencontainers.image.licenses="GPL-3.0-or-later"
+
+RUN dnf install -y \
+        check-devel \
+        cmocka-devel \
+        python3-pytest \
+        python3-coverage \
+        python3-requests \
+        python3-pexpect \
+        lcov \
+        gcovr \
+        clang-tools-extra \
+        iproute \
+        iputils \
+        bind-utils \
+        tcpdump \
+        wireshark-cli \
+        nmap-ncat \
+        socat \
+        iperf3 \
+        ltrace \
+        perf \
+        sysstat \
+        htop \
+    && dnf clean all \
+    && rm -rf /var/cache/dnf \
+    && mkdir -p /workspace/test-results /workspace/coverage-reports /workspace/test-logs \
+    && chown -R developer:developer /workspace
+
+COPY deploy/podman/scripts/runners/test_runner.py /usr/local/bin/run-tests
+COPY deploy/podman/scripts/runners/benchmark_runner.py /usr/local/bin/run-benchmarks
+RUN chmod 0755 /usr/local/bin/run-tests /usr/local/bin/run-benchmarks
+
+USER developer
+WORKDIR /workspace
+ENV TEST_RESULTS=/workspace/test-results \
+    COVERAGE_REPORTS=/workspace/coverage-reports \
+    TEST_LOGS=/workspace/test-logs
+CMD ["/usr/local/bin/run-tests"]

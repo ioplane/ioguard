@@ -68,7 +68,7 @@ podman pull registry.access.redhat.com/ubi9/ubi:latest
 4. Use alternative registry:
 ```bash
 export BASE_IMAGE="docker.io/library/oraclelinux:10"
-./scripts/build-dev.sh
+uv run --script ./scripts/container_build.py dev
 ```
 
 ### Error: "Disk space full"
@@ -112,7 +112,7 @@ make[1]: *** [Makefile:123: install] Error 1
 1. Check build logs:
 ```bash
 # Rebuild with verbose output
-DEBUG=1 ./scripts/build-dev.sh
+uv run --script ./scripts/container_build.py dev --log-level=debug
 ```
 
 2. Verify library versions:
@@ -123,8 +123,8 @@ curl -I https://github.com/wolfSSL/wolfssl/releases/tag/v5.8.2
 
 3. Try without optimizations:
 ```bash
-# Edit build-dev.sh, remove -O3 flags
-CFLAGS="-g -O0"
+# Use the explicit Containerfile build arguments for a controlled diagnostic build.
+uv run --script ./scripts/container_build.py dev --log-level=debug
 ```
 
 4. Build libraries separately:
