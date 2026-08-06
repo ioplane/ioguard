@@ -70,7 +70,7 @@ For wolfSSL to receive a **GO** decision, it must achieve:
 
 ### Next Steps
 1. Run wolfSSL benchmark with identical parameters (Task 7)
-2. Compare results using `./tests/poc/compare.sh`
+2. Compare results using `uv run --script ./tests/poc/compare.py`
 3. Make GO/NO-GO decision based on criteria above
 4. Document decision rationale
 
