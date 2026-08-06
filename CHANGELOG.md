@@ -44,9 +44,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Project renamed from wolfguard to ioguard (`iog_` prefix, `IOGUARD_` guards).
 - License changed from GPLv2 to GPLv3 (wolfSSL dependency requirement).
 - Rootless Podman and SELinux verification now use the modular `container_verify.py` CLI.
+- Local image inspection now uses `image_inspect.py` with structured Skopeo JSON parsing.
 
 ### Removed
 
 - Removed the separate `verify-rootless.sh` and `verify-selinux.sh` entrypoints.
+- Removed the `inspect-images.sh` entrypoint.
 
 [Unreleased]: https://github.com/dantte-lp/ioguard/commits/master

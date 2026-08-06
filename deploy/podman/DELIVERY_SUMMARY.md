@@ -76,7 +76,7 @@ Production-grade containerized development environment for ioguard has been succ
 | Script | Purpose | Features |
 |--------|---------|----------|
 | push-image.sh | Push images to registry | Authentication check, digest verification, signing support |
-| inspect-images.sh | Inspect all images | Size, layers, labels, architecture, environment |
+| image_inspect.py | Inspect all images | Size, layers, labels, architecture, environment |
 
 ### 6. Volume Management Scripts (2 files)
 
@@ -178,7 +178,7 @@ Production-grade containerized development environment for ioguard has been succ
     │   ├── build-build.sh          # Build image
     │   ├── build-ci.sh             # CI image
     │   ├── push-image.sh           # Push to registry
-    │   ├── inspect-images.sh       # Inspect images
+    │   ├── image_inspect.py        # Inspect images
     │   ├── backup-volumes.sh       # Backup volumes
     │   ├── restore-volumes.sh      # Restore volumes
     │   └── container_verify.py    # Verify rootless and SELinux support
