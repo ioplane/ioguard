@@ -1,5 +1,7 @@
 # Design Plans
 
+Current execution/validation plan: [2026-10-26 ioguard agent development plan](2026-10-26-ioguard-agent-development-plan.md). Historical sequences and results below retain their original scope and dates.
+
 Sprint plans and architecture design documents, ordered by date.
 
 | Document | Description |

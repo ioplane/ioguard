@@ -1,5 +1,7 @@
 # Roadmap
 
+Current execution/validation plan: [2026-10-26 ioguard agent development plan](2026-10-26-ioguard-agent-development-plan.md). Historical sequences and results below retain their original scope and dates.
+
 Sprint-based development plan. Each sprint ~2 weeks.
 
 ## Status
