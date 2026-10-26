@@ -55,6 +55,17 @@ lifetimes. Merely installing parser, iohttp, liboas or iojournal does not integr
 Admin HTTP and logger replacement remain later consumer decisions. Do not import ngtun
 DTLS/wire/session policy or add ngtun as a dependency.
 
+## Planned GitLab handoff
+
+The owner plans import to `https://gitlab.infra4.dev/ioplane/network/ioguard`;
+import completion is unverified. This GitHub PR is a pre-import transferable
+patchset: retain its exact base/head and parent history. After the owner import,
+bind actual GitLab project ID, default SHA/refs and reviews, compare history,
+and read the post-import contribution contract. Future implementation uses the
+accepted GitLab destination after CI, registry, ACL and host-identity receipts;
+the GitHub publication rules below describe only pre-import delivery. This plan
+performs no import, group transfer, remote/config change or PR closure.
+
 ## Publication contract
 
 Use the existing `master` contribution branch/PR workflow. Keep source, negative tests,

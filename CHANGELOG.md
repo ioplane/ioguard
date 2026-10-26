@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 
-- Dated 2026-10-26 development plan with current source/PR boundaries, next functional slice, admission evidence and measured CI entry blockers.
+- Dated 2026-10-26 development plan with current source/PR boundaries, next functional slice, admission evidence, measured CI entry blockers and planned GitLab import handoff.
 - io_uring abstraction layer for all I/O (network, TUN, timers, signals).
 - mimalloc memory allocator wrapper (MI_SECURE mode).
 - IPC transport over SOCK_SEQPACKET with SCM_RIGHTS fd passing.
