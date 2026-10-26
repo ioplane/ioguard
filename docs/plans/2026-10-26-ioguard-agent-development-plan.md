@@ -21,6 +21,17 @@ qualification before the forwarding path is admitted. This is a review target, n
 reproduced runtime failure. README license wording differs from the GPLv3 LICENSE file;
 resolve the source/document disposition without silently changing licensing.
 
+## W0: CI entry repair (2026-10-26)
+
+Source `430e9034f5de1bf54717b5b0ec96e5221e347f54`, run `40395336784`:
+jobs `121826756985` and `121826756868` cannot find `CMakePresets.json`;
+job `121826756698` cannot install `libcares-dev`; job `121826756719` reports
+`src/network/ipam.c:26:33: error: code should be clang-formatted`.
+The default and PR trees both lack the preset file; the workflow and C source
+are unchanged. Repair and qualify the checked-in preset, dependency/tool channel
+and formatting entry before product/release claims. Do not import dirty local
+presets or infer test success: these jobs stop before tests or at formatting.
+
 ## Next functional slice
 
 Qualify one authenticated CSTP connection carrying a packet in both directions, including
